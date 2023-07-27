@@ -3,6 +3,7 @@
 let secretNumber = Math.round(Math.random() * 20);
 let remainingChance = 5;
 let highScore = 100;
+let win;
 
 document.querySelector('.check').addEventListener('click', function () {
   let guess = document.querySelector('.guess').value;
@@ -10,14 +11,17 @@ document.querySelector('.check').addEventListener('click', function () {
   if (!guess) {
     document.querySelector('.message').innerHTML = '⚠️ no number';
   } else {
-    if (remainingChance > 0) {
+    if (remainingChance > 0 && win != 1) {
       if (guess == secretNumber) {
         remainingChance--;
         highScore -= 20;
         document.querySelector('.message').innerHTML = '🏆 you won!';
         document.querySelector('.number').innerHTML = secretNumber;
-        document.querySelector('.highscore').innerHTML = highScore;
         document.querySelector('body').style.backgroundColor = '#60b347';
+        if (document.querySelector('.highscore').innerHTML < highScore) {
+          document.querySelector('.highscore').innerHTML = highScore;
+        }
+        win = 1;
       } else if (guess > secretNumber) {
         document.querySelector('.message').innerHTML = '📈 too high';
         remainingChance--;
@@ -27,7 +31,7 @@ document.querySelector('.check').addEventListener('click', function () {
         remainingChance--;
         highScore -= 20;
       }
-    } else {
+    } else if (guess < 0) {
       document.querySelector('.message').innerHTML = 'you lost';
     }
     document.querySelector('.score').innerHTML = remainingChance;
@@ -43,4 +47,5 @@ document.querySelector('.again').addEventListener('click', function () {
   document.querySelector('body').style.backgroundColor = '#222';
   document.querySelector('.number').innerHTML = '?';
   document.querySelector('.message').innerHTML = 'Start guessing...';
+  win = 0;
 });
